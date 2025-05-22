@@ -38,9 +38,14 @@ flutter:
       web:
         pluginClass: FilePickerWeb
         fileName: _internal/file_picker_web.dart
-      macos:
-        default_package: file_picker
-      windows:
-        default_package: file_picker
-      linux:
-        default_package: file_picker
+      
+      # AnhV2 fix: Package file_picker:linux references file_picker:linux as the default plugin, but it does not provide an inline implementation.
+      # Ask the maintainers of file_picker to either avoid referencing a default implementation via `platforms: linux: default_package: file_picker` or add an inline
+      # implementation to file_picker via `platforms: linux:` `pluginClass` or `dartPluginClass`.
+
+      # macos:
+      #   default_package: file_picker
+      # windows:
+      #   default_package: file_picker
+      # linux:
+      #   default_package: file_picker
