@@ -254,43 +254,37 @@ public class FilePickerPlugin implements MethodChannel.MethodCallHandler, Flutte
     }
 
 
-    private void setup(
-            final BinaryMessenger messenger,
-            final Application application,
-            final Activity activity,
-            final PluginRegistry.Registrar registrar,
-            final ActivityPluginBinding activityBinding) {
+private void setup(
+        final BinaryMessenger messenger,
+        final Application application,
+        final Activity activity,
+        final ActivityPluginBinding activityBinding) {
 
-        this.activity = activity;
-        this.application = application;
-        this.delegate = new FilePickerDelegate(activity);
-        this.channel = new MethodChannel(messenger, CHANNEL);
-        this.channel.setMethodCallHandler(this);
-        new EventChannel(messenger, EVENT_CHANNEL).setStreamHandler(new EventChannel.StreamHandler() {
-            @Override
-            public void onListen(final Object arguments, final EventChannel.EventSink events) {
-                delegate.setEventHandler(events);
-            }
-
-            @Override
-            public void onCancel(final Object arguments) {
-                delegate.setEventHandler(null);
-            }
-        });
-        this.observer = new LifeCycleObserver(activity);
-        if (registrar != null) {
-            // V1 embedding setup for activity listeners.
-            application.registerActivityLifecycleCallbacks(this.observer);
-            registrar.addActivityResultListener(this.delegate);
-            registrar.addRequestPermissionsResultListener(this.delegate);
-        } else {
-            // V2 embedding setup for activity listeners.
-            activityBinding.addActivityResultListener(this.delegate);
-            activityBinding.addRequestPermissionsResultListener(this.delegate);
-            this.lifecycle = FlutterLifecycleAdapter.getActivityLifecycle(activityBinding);
-            this.lifecycle.addObserver(this.observer);
+    this.activity = activity;
+    this.application = application;
+    this.delegate = new FilePickerDelegate(activity);
+    this.channel = new MethodChannel(messenger, CHANNEL);
+    this.channel.setMethodCallHandler(this);
+    new EventChannel(messenger, EVENT_CHANNEL).setStreamHandler(new EventChannel.StreamHandler() {
+        @Override
+        public void onListen(final Object arguments, final EventChannel.EventSink events) {
+            delegate.setEventHandler(events);
         }
-    }
+
+        @Override
+        public void onCancel(final Object arguments) {
+            delegate.setEventHandler(null);
+        }
+    });
+    this.observer = new LifeCycleObserver(activity);
+
+    // V2 embedding setup only
+    activityBinding.addActivityResultListener(this.delegate);
+    activityBinding.addRequestPermissionsResultListener(this.delegate);
+    this.lifecycle = FlutterLifecycleAdapter.getActivityLifecycle(activityBinding);
+    this.lifecycle.addObserver(this.observer);
+}
+
 
     private void tearDown() {
         this.activityBinding.removeActivityResultListener(this.delegate);
