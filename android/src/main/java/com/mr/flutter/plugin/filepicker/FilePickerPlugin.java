@@ -116,14 +116,14 @@ public class FilePickerPlugin implements MethodChannel.MethodCallHandler, Flutte
     private static boolean withData = false;
     private static int compressionQuality;
 
-    /**
-     * Plugin registration.
-     */
-    public static void registerWith(final io.flutter.plugin.common.PluginRegistry.Registrar registrar) {
+    // This method is only used in pre-Flutter-1.12 projects (embedding v1).
+    // Since Flutter 3.0+, this is deprecated and causes build errors.
+    // Safe to comment out or remove.
 
+    /// Plugin registration.
+    /*
+    public static void registerWith(final io.flutter.plugin.common.PluginRegistry.Registrar registrar) {
         if (registrar.activity() == null) {
-            // If a background flutter view tries to register the plugin, there will be no activity from the registrar,
-            // we stop the registering process immediately because the ImagePicker requires an activity.
             return;
         }
 
@@ -135,8 +135,8 @@ public class FilePickerPlugin implements MethodChannel.MethodCallHandler, Flutte
 
         final FilePickerPlugin plugin = new FilePickerPlugin();
         plugin.setup(registrar.messenger(), application, activity, registrar, null);
-
     }
+    */
 
 
     @SuppressWarnings("unchecked")
