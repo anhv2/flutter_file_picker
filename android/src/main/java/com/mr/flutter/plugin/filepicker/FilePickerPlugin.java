@@ -319,7 +319,6 @@ private void setup(
                 this.pluginBinding.getBinaryMessenger(),
                 (Application) this.pluginBinding.getApplicationContext(),
                 this.activityBinding.getActivity(),
-                null,
                 this.activityBinding);
     }
 
